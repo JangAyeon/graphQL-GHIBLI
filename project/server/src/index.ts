@@ -1,29 +1,28 @@
 import 'reflect-metadata';
 import express from 'express';
-import {ApolloServer, gql} from "apollo-server-express";
-import {ApolloServerPluginLandingPageLocalDefault} from "apollo-server-core";
+import { ApolloServer, gql } from 'apollo-server-express';
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import http from 'http';
 
-
 async function main() {
-
   const app = express();
 
-  const apolloServer= new ApolloServer({
-    typeDefs:gql`
-    type Query{
-        hello:String
-    }`,
-    resolvers:{
-        Query:{
-            hello:()=>"hello world",
-        },
+  const apolloServer = new ApolloServer({
+    typeDefs: gql`
+      type Query {
+        hello: String
+      }
+    `,
+    resolvers: {
+      Query: {
+        hello: () => 'hello world',
+      },
     },
-    plugins:[ApolloServerPluginLandingPageLocalDefault()],
+    plugins: [ApolloServerPluginLandingPageLocalDefault()],
   });
 
   await apolloServer.start();
-  apolloServer.applyMiddleware({app});
+  apolloServer.applyMiddleware({ app });
 
   const httpServer = http.createServer(app);
   httpServer.listen(process.env.PORT || 4000, () => {
